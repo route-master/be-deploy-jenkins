@@ -1,12 +1,18 @@
-version: '3.9'
+version: "3" 
 services:
-  app:
-    image: jenkins_practice
-    container_name: jenkins
-    restart: unless-stopped
-    tty: true
-    build:
-      context: .
-      dockerfile: Dockerfile
+
+  route-master-jenkins:
+    container_name: route-master-jenkins
+    user: "${UID}:${GID}"
+    image: route-master-jenkins
+    build: .
+    volumes:
+      - $VOLUME_JENKINS_HOME:/var/jenkins_home
+      - /var/run:/var/run:ro
+    environment:
+      - TZ=Asia/Seoul
     ports:
       - "8080:8080"
+      - "50000:50000"
+    group_add:
+      - ${DOCKER_GROUP}
